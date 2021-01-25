@@ -11,40 +11,83 @@ from pyvcs.repo import repo_find
 
 
 def hash_object(data: bytes, fmt: str, write: bool = False) -> str:
-    # PUT YOUR CODE HERE
-    ...
+    data_reformatted = (fmt + " " + str(len(data))).encode() + b"\00" + data
+    data_hash_sum = hashlib.sha1(data_reformatted).hexdigest()
+    if write:
+        gitdir = repo_find()
+        (gitdir / "objects" / data_hash_sum[:2]).mkdir(exist_ok=True)
+        with (gitdir / "objects" / data_hash_sum[:2] / data_hash_sum[2:]).open("wb") as f:
+            f.write(zlib.compress(data_reformatted))
+    return data_hash_sum
 
 
 def resolve_object(obj_name: str, gitdir: pathlib.Path) -> tp.List[str]:
-    # PUT YOUR CODE HERE
-    ...
+    if (4 <= len(obj_name) <= 40) is False:
+        raise Exception(f"Not valid object name {obj_name}")
+    result = []
+    for file in (gitdir / "objects" / obj_name[:2]).glob(f"{obj_name[2:]}*"):
+        result.append(obj_name[:2] + file.name)
+    if not result:
+        raise Exception(f"Not valid object name {obj_name}")
+    return result
 
 
 def find_object(obj_name: str, gitdir: pathlib.Path) -> str:
-    # PUT YOUR CODE HERE
-    ...
+    dir_name = obj_name[:2]
+    file_name = obj_name[2:]
+    path = str(gitdir) + "/" + dir_name + "/" + file_name
+    return path
 
 
 def read_object(sha: str, gitdir: pathlib.Path) -> tp.Tuple[str, bytes]:
-    # PUT YOUR CODE HERE
-    ...
+    with (gitdir / "objects" / sha[:2] / sha[2:]).open("rb") as f:
+        data = zlib.decompress(f.read())
+    return data.split(b" ")[0].decode(), data.split(b"\00", maxsplit=1)[1]
 
 
 def read_tree(data: bytes) -> tp.List[tp.Tuple[int, str, str]]:
-    # PUT YOUR CODE HERE
-    ...
+    arr = []
+    while data:
+        before_sha_ind = data.index(b"\00")
+        mode, name = map(lambda x: x.decode(), data[:before_sha_ind].split(b" "))
+        sha = data[before_sha_ind + 1 : before_sha_ind + 21]
+        arr.append((int(mode), sha.hex(), name))
+        data = data[before_sha_ind + 21 :]
+    return arr
 
 
 def cat_file(obj_name: str, pretty: bool = True) -> None:
-    # PUT YOUR CODE HERE
-    ...
+    fmt, data = read_object(obj_name, repo_find())
+    if fmt == "blob" or fmt == "commit":
+        print(data.decode())
+    else:
+        for i in read_tree(data):
+            print(f"{i[0]:06}", "tree" if i[0] == 40000 else "blob", i[1] + "\t" + i[2])
 
 
-def find_tree_files(tree_sha: str, gitdir: pathlib.Path) -> tp.List[tp.Tuple[str, str]]:
-    # PUT YOUR CODE HERE
-    ...
+def find_tree_files(tree_sha: str, gitdir: pathlib.Path, collector: str = "") -> tp.List[tp.Tuple[str, str]]:
+    tree_files = []
+    _, tree = read_object(tree_sha, gitdir)
+    tree_inputs = read_tree(tree)
+    for entry in tree_inputs:
+        pointer_type, _ = read_object(entry[1], gitdir)
+    path = pathlib.Path(entry[2]).relative_to(gitdir.parent)
+    if path.is_dir():
+        collector += str(path) + "/"
+    if pointer_type == "tree":
+        tree_files += find_tree_files(entry[1], gitdir, collector)
+    else:
+        tree_files.append((entry[1], collector + str(path)))
+    return tree_files
 
 
 def commit_parse(raw: bytes, start: int = 0, dct=None):
-    # PUT YOUR CODE HERE
-    ...
+    data: tp.Dict[str, tp.Any] = {"message": []}
+    arr = raw.decode().split("\n")
+    for line in arr:
+        if line.startswith(("tree", "parent", "author", "committer")):
+            name, val = line.split(" ", maxsplit=1)
+            data[name] = val
+        else:
+            data["message"].append(line)
+    return data
