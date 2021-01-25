@@ -6,19 +6,24 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
 
-from vkapi.friends import get_friends, get_mutual
+from vkapi.friends import get_friends, get_mutual, MutualFriends
 
 
 def ego_network(
     user_id: tp.Optional[int] = None, friends: tp.Optional[tp.List[int]] = None
 ) -> tp.List[tp.Tuple[int, int]]:
-    """
-    Построить эгоцентричный граф друзей.
 
-    :param user_id: Идентификатор пользователя, для которого строится граф друзей.
-    :param friends: Идентификаторы друзей, между которыми устанавливаются связи.
-    """
-    pass
+    if friends is False:
+        fields: tp.List[tp.Dict[str, tp.Any]] = get_friends(user_id, fields=["nickname", "is_closed, deactivate"]).items
+        friends = [i["id"] for i in fields if not (i.get("deactivate") or i.get("is_closed"))]
+        
+    mutuals = get_mutual(user_id, target_uids=friends)
+    ego_net_graph = []
+    for mut in mutuals:
+        mut = tp.cast(MutualFriends, mut)
+        for common in mut["common_friends"]:
+            ego_net_graph.append((mut["id"], common))
+    return ego_net_graph
 
 
 def plot_ego_network(net: tp.List[tp.Tuple[int, int]]) -> None:
