@@ -6,12 +6,15 @@ from vkapi.friends import get_friends
 
 
 def age_predict(user_id: int) -> tp.Optional[float]:
-    """
-    Наивный прогноз возраста пользователя по возрасту его друзей.
-
-    Возраст считается как медиана среди возраста всех друзей пользователя
-
-    :param user_id: Идентификатор пользователя.
-    :return: Медианный возраст пользователя.
-    """
-    pass
+    friends = get_friends(user_id, fields=["bdate"]).items
+    arr_ages = []
+    for i in friends:
+        try:
+            bdate = dt.datetime.strptime(friend["bdate"], "%d.%m.%Y").year
+        except (KeyError, ValueError):
+            continue
+        arr_ages.append(dt.date.today().year - bdate)
+    try:
+        return statistics.median(arr_ages)
+    except statistics.StatisticsError:
+        return None
