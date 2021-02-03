@@ -11,7 +11,9 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     """
     ciphertext = ""
     k = list(keyword)
+    n = len(k)
     a = list(plaintext)
+    b = len(a)
     for i in range(0, len(a)):
         while len(k) < len(a):
             k.append(k[i])
