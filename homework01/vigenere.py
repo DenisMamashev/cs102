@@ -61,7 +61,9 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     """
     plaintext = ""
     k = list(keyword)
+    n = len(k)
     a = list(ciphertext)
+    b = len(a)
     for i in range(0, len(a)):
         while len(k) < len(a):
             k.append(k[i])
