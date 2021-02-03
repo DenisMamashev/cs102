@@ -17,16 +17,16 @@ jobs:
         pip install black mypy pylint pygame pyfakefs
     - name: Run black
       run: |
-        black -l 100 caesar.py vigenere.py rsa.py
+        black -l 100 homework01/caesar.py homework01/vigenere.py homework01/rsa.py
     - name: Run isort
       run: |
-        isort caesar.py vigenere.py rsa.py
+        isort homework01/caesar.py homework01/vigenere.py homework01/rsa.py
     - name: Run mypy
       run: |
-       mypy caesar.py vigenere.py rsa.py --ignore-missing
+       mypy homework01/caesar.py homework01/vigenere.py homework01/rsa.py --ignore-missing
     - name: Run pylint
       run: |
-        pylint --exit-zero caesar.py vigenere.py rsa.py
+        pylint --exit-zero homework01/caesar.py homework01/vigenere.py homework01/rsa.py
     - name: Run unittests
       run: |
-        python -m unittest discover caesar.py vigenere.py rsa.py
+        python -m unittest discover homework01/caesar.py homework01/vigenere.py homework01/rsa.py
