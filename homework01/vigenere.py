@@ -40,7 +40,8 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
                 )
              else:
                 ciphertext += str(
-                    chr((ord(a[i]) + int(ord(k[i])) - int(ord("a")) - ord("a")) % 26 + ord("a"))
+                    chr((ord(a[i]) + int(ord(k[i])) - int(ord("a")) - ord("a")) % 26 + ord("a")
+                       )
                 )
      return ciphertext
 
