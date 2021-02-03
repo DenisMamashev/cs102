@@ -27,7 +27,7 @@ jobs:
        mypy caesar.py vigenere.py rsa.py --ignore-missing
     - name: Run pylint
       run: |
-        pylint --exit-zero ${{ github.head_ref }}
+        pylint --exit-zero caesar.py vigenere.py rsa.py
     - name: Run unittests
       run: |
-        python -m unittest discover ${{ github.head_ref }}
+        python -m unittest discover caesar.py vigenere.py rsa.py
