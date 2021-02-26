@@ -16,15 +16,21 @@ class GUI(UI):
 
     def draw_lines(self) -> None:
         for x in range(0, self.cell_size * self.life.cols, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color("black"), (x, 0), (x, self.cell_size * self.life.rows))
+            pygame.draw.line(
+                self.screen, pygame.Color("black"), (x, 0), (x, self.cell_size * self.life.rows)
+            )
         for y in range(0, self.cell_size * self.life.rows, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color("black"), (0, y), (self.cell_size * self.life.cols, y))
+            pygame.draw.line(
+                self.screen, pygame.Color("black"), (0, y), (self.cell_size * self.life.cols, y)
+            )
 
     def draw_grid(self) -> None:
         for row in range(self.life.rows):
             for col in range(self.life.cols):
                 if self.life.curr_generation[row][col] == 1:
-                    pygame.draw.rect(self.screen,pygame.Color("green"),
+                    pygame.draw.rect(
+                        self.screen,
+                        pygame.Color("green"),
                         (
                             self.cell_size * col + 1,
                             self.cell_size * row + 1,
@@ -33,7 +39,9 @@ class GUI(UI):
                         ),
                     )
                 else:
-                    pygame.draw.rect(self.screen,pygame.Color("white"),
+                    pygame.draw.rect(
+                        self.screen,
+                        pygame.Color("white"),
                         (
                             self.cell_size * col + 1,
                             self.cell_size * row + 1,
