@@ -1,14 +1,11 @@
 import random
 from typing import List, Optional, Set, Tuple
 
-
-
 def read_sudoku(filename: str) -> List[List[str]]:
     """Прочитать Судоку из указанного файла """
     digits = [c for c in open(filename).read() if c in "123456789."]
     grid = group(digits, 9)
     return grid
-
 
 def display(grid: List[List[str]]) -> None:
     """Вывод Судоку """
@@ -33,7 +30,6 @@ def group(values: List[str], n: int) -> List[List[str]]:
         new_array.append(values[i : i + n])
     return new_array
 
-
 def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     """Возвращает все значения для номера строки, указанной в pos
 
@@ -45,7 +41,6 @@ def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     ['.', '8', '9']
     """
     return grid[pos[0]]
-
 
 def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     """Возвращает все значения для номера столбца, указанного в pos
@@ -62,7 +57,6 @@ def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     for i in range(len(grid)):
         new_array.append(grid[i][col])
     return new_array
-
 
 def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     """Возвращает все значения из квадрата, в который попадает позиция pos
@@ -82,7 +76,6 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
             new_array.append(grid[i][k])
     return new_array
 
-
 def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
     """Найти первую свободную позицию в пазле
 
@@ -99,7 +92,6 @@ def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
                 return (row, col)
     return None
 
-
 def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str]:
     """Вернуть множество возможных значения для указанной позиции
 
@@ -112,7 +104,6 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
     True
     """
     return set("123456789") - (set("123456789") & set(get_row(grid, pos) + get_col(grid, pos) + get_block(grid, pos)))
-
 
 def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
     """Решение пазла, заданного в grid """
@@ -142,7 +133,6 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
                 return sudoku_f_solve
     return None
 
-
 def check_solution(solution: List[List[str]]) -> bool:
     """Если решение solution верно, то вернуть True, в противном случае False """
     # TODO: Add doctests with bad puzzles
@@ -152,7 +142,6 @@ def check_solution(solution: List[List[str]]) -> bool:
             if set(get_row(solution, pos)) != set("123456789") or set(get_col(solution, pos)) != set("123456789") or set(get_block(solution, pos)) != set("123456789"):
                 return False
     return True
-
 
 def generate_sudoku(N: int) -> List[List[str]]:
     """Генерация судоку заполненного на N элементов
@@ -185,7 +174,6 @@ def generate_sudoku(N: int) -> List[List[str]]:
                 solution[row][col] = "."
                 N += 1
     return solution
-
 
 if __name__ == "__main__":
     for fname in ["puzzle1.txt", "puzzle2.txt", "puzzle3.txt"]:
