@@ -1,7 +1,7 @@
 import random
 from typing import List, Optional, Set, Tuple
 
- def read_sudoku(filename: str) -> List[List[str]]:
+ def read_sudoku (filename: str) -> List[List[str]]:
      """Прочитать Судоку из указанного файла """
     digits = [c for c in open(filename).read() if c in "123456789."]
     grid = group(digits, 9)
