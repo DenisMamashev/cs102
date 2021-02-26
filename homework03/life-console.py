@@ -1,8 +1,8 @@
 import curses
-import pygame
 import argparse
-
 from pathlib import Path
+
+import pygame
 from life import GameOfLife
 from ui import UI
 
