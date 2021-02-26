@@ -65,7 +65,9 @@ def cat_file(obj_name: str, pretty: bool = True) -> None:
             print(f"{i[0]:06}", "tree" if i[0] == 40000 else "blob", i[1] + "\t" + i[2])
 
 
-def find_tree_files(tree_sha: str, gitdir: pathlib.Path, collector: str = "") -> tp.List[tp.Tuple[str, str]]:
+def find_tree_files(
+    tree_sha: str, gitdir: pathlib.Path, collector: str = ""
+) -> tp.List[tp.Tuple[str, str]]:
     tree_files = []
     _, tree = read_object(tree_sha, gitdir)
     tree_inputs = read_tree(tree)
