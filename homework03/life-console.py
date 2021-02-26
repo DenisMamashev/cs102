@@ -33,7 +33,7 @@ class Console(UI):
         running = True
         is_paused = False
         while running:
-            if (self.life.is_changing == False or self.life.is_max_generations_exceeded == True):
+            if self.life.is_changing == False or self.life.is_max_generations_exceeded == True:
                 running = False
             button = screen.getch()
             if button == ord("q"):
@@ -53,14 +53,8 @@ class Console(UI):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="GameOfLife")
     parser.add_argument("--rows", type=int, default=10, help="Number of rows in grid")
-    parser.add_argument(
-        "--cols", type=int, default=30, help="Number of columns in grid"
-    )
-    parser.add_argument(
-        "--generations", type=int, default=100, help="Number of generations"
-    )
+    parser.add_argument("--cols", type=int, default=30, help="Number of columns in grid")
+    parser.add_argument("--generations", type=int, default=100, help="Number of generations")
     arguments = parser.parse_args()
-    game = Console(
-        life=GameOfLife((arguments.rows, arguments.cols), True, arguments.generations)
-    )
+    game = Console(life=GameOfLife((arguments.rows, arguments.cols), True, arguments.generations))
     game.run()
