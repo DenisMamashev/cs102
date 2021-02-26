@@ -24,7 +24,8 @@ def write_tree(gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str
     for name in subtrees:
         stat = (gitdir.parent / dirname / name).stat()
         tree_content.append(
-            (0o40000,
+            (
+                0o40000,
                 gitdir.parent / dirname / name,
                 bytes.fromhex(
                     write_tree(
