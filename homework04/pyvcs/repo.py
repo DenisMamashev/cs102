@@ -23,7 +23,9 @@ def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:
     os.makedirs(workdir / dirs_name / "refs" / "tags", exist_ok=True)
     (workdir / dirs_name / "objects").mkdir()
     with (workdir / dirs_name / "config").open("w") as f:
-        f.write("[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = false\n\tlogallrefupdates = false\n",)
+        f.write(
+            "[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = false\n\tlogallrefupdates = false\n",
+        )
     with (workdir / dirs_name / "HEAD").open("w") as f:
         f.write("ref: refs/heads/master\n")
     with (workdir / dirs_name / "description").open("w") as f:
