@@ -1,4 +1,4 @@
-from typing import Tuple, List, Set, Optional
+from typing import List, Optional, Set, Tuple
 import random
 
 
