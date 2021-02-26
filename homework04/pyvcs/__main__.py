@@ -85,7 +85,6 @@ def add_ls_files_subparser(subparsers) -> None:
     )
     ls_files_subparser.add_argument(
         "-s",
-        dest="stage",
         action="store_true",
         help="Show staged contents' mode bits, object name and stage number in the output",
     )
@@ -97,7 +96,11 @@ def add_update_index_subparser(subparsers) -> None:
         "update-index", help="Add file contents to the index."
     )
     update_index_subparser.add_argument(
-        "paths", nargs="+", metavar="path", type=pathlib.Path, help="path(s) of files to add"
+        "paths",
+        nargs="+",
+        metavar="path",
+        type=pathlib.Path,
+        help="path(s) of files to add",
     )
     update_index_subparser.add_argument(
         "--add",
