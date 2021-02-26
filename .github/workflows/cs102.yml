@@ -15,18 +15,16 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install black mypy pylint pygame pyfakefs
+        pip install -r homework05/requirements.txt
     - name: Run black
       run: |
-        black -l 100 homework01/caesar.py homework01/vigenere.py homework01/rsa.py
-    - name: Run isort
-      run: |
-        isort homework01/caesar.py homework01/vigenere.py homework01/rsa.py
+        black --check -l 100 --diff --color --exclude "test*" ${{ github.head_ref }}
     - name: Run mypy
       run: |
-       mypy homework01/caesar.py homework01/vigenere.py homework01/rsa.py --ignore-missing
+        mypy ${{ github.head_ref }} --ignore-missing
     - name: Run pylint
       run: |
-        pylint --exit-zero homework01/caesar.py homework01/vigenere.py homework01/rsa.py
+        pylint --exit-zero ${{ github.head_ref }}
     - name: Run unittests
       run: |
-        python -m unittest discover homework01/caesar.py homework01/vigenere.py homework01/rsa.py
+        python -m unittest discover ${{ github.head_ref }}
