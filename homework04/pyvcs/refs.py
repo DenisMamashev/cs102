@@ -6,6 +6,7 @@ def update_ref(gitdir: pathlib.Path, ref: tp.Union[str, pathlib.Path], new_value
     with (gitdir / ref).open("w") as file:
         file.write(new_value)
 
+        
 def symbolic_ref(gitdir: pathlib.Path, name: str, ref: str) -> None:
     with (gitdir / name).open("w") as file:
         file.write(ref)
