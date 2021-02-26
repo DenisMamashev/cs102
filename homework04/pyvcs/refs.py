@@ -18,7 +18,7 @@ def ref_resolve(gitdir: pathlib.Path, refname: str) -> str:
     if (gitdir / refname).exists():
         with (gitdir / refname).open() as f:
             return f.read().strip()
-    return None # type: ignore
+    return None
 
 
 def resolve_head(gitdir: pathlib.Path) -> tp.Optional[str]:
