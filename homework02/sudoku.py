@@ -1,5 +1,6 @@
-from typing import List, Optional, Set, Tuple
 import random
+from typing import List, Optional, Set, Tuple
+
 
 
 def read_sudoku(filename: str) -> List[List[str]]:
