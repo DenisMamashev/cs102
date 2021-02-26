@@ -37,11 +37,19 @@ def write_tree(gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str
             )
         )
     tree_content.sort(key=lambda x: x[1])
-    data = b"".join(f"{elem[0]:o} {elem[1].name}".encode() + b"\00" + elem[2] for elem in tree_content)
+    data = b"".join(
+        f"{elem[0]:o} {elem[1].name}".encode() + b"\00" + elem[2] for elem in tree_content
+    )
     return hash_object(data, "tree", write=True)
 
 
-def commit_tree(gitdir: pathlib.Path,tree: str,message: str,parent: tp.Optional[str] = None,author: tp.Optional[str] = None) -> str:
+def commit_tree(
+    gitdir: pathlib.Path,
+    tree: str,
+    message: str,
+    parent: tp.Optional[str] = None,
+    author: tp.Optional[str] = None
+) -> str:
     if author is None:
         author = "{} <{}>".format(os.getenv("GIT_AUTHOR_NAME"), os.getenv("GIT_AUTHOR_EMAIL"))
     time_now = int(time.mktime(time.localtime()))
