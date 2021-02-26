@@ -48,7 +48,7 @@ def commit_tree(
     tree: str,
     message: str,
     parent: tp.Optional[str] = None,
-    author: tp.Optional[str] = None
+    author: tp.Optional[str] = None,
 ) -> str:
     if author is None:
         author = "{} <{}>".format(os.getenv("GIT_AUTHOR_NAME"), os.getenv("GIT_AUTHOR_EMAIL"))
