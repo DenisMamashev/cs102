@@ -23,8 +23,15 @@ def add(gitdir: pathlib.Path, paths: tp.List[pathlib.Path]) -> None:
 
 
 def commit(gitdir: pathlib.Path, message: str, author: tp.Optional[str] = None) -> str:
-    hash_commit = commit_tree(gitdir, write_tree(gitdir, read_index(gitdir), str(gitdir.parent)), message, resolve_head(gitdir), author)
+    hash_commit = commit_tree(
+        gitdir,
+        write_tree(gitdir, read_index(gitdir), str(gitdir.parent)),
+        message,
+        resolve_head(gitdir),
+        author,
+    )
     return hash_commit
+
 
 def checkout(gitdir: pathlib.Path, obj_name: str) -> None:
     for entry in read_index(gitdir):
@@ -33,7 +40,9 @@ def checkout(gitdir: pathlib.Path, obj_name: str) -> None:
     commit_data = commit_parse(read_object(obj_name, gitdir)[1])
     end = False
     while not end:
-        trees: tp.List[tp.Tuple[pathlib.Path, tp.List[tp.Tuple[int, str, str]]]] = [(gitdir.parent, read_tree(read_object(commit_data["tree"], gitdir)[1]))]
+        trees: tp.List[tp.Tuple[pathlib.Path, tp.List[tp.Tuple[int, str, str]]]] = [
+            (gitdir.parent, read_tree(read_object(commit_data["tree"], gitdir)[1]))
+        ]
         while trees:
             tree_path, tree_content = trees.pop()
             for file_data in tree_content:
